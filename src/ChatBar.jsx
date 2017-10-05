@@ -3,14 +3,23 @@ import React, {Component} from 'react';
 class ChatBar extends Component {
   constructor(props) {
     super(props);
+    this.onEnter = this.onEnter.bind(this);
+  }
+
+  onEnter(target) {
+    if(target.key === 'Enter') {
+      this.props.chatBox(document.getElementById('chatBarUsername').value,
+        document.getElementById('chatBarMessage').value);
+        document.getElementById('chatBarMessage').value = '';
+    }
   }
 
   render() {
     console.log("Rendering <ChatBar/>");
     return (
       <footer className="chatbar">
-        <input className="chatbar-username" defaultValue={this.props.name} placeholder="Your Name (Optional)" />
-        <input className="chatbar-message" placeholder="Type a message and hit ENTER" />
+        <input className="chatbar-username" id="chatBarUsername" defaultValue={this.props.name} placeholder="Your Name (Optional)" />
+        <input className="chatbar-message" id="chatBarMessage" placeholder="Type a message and hit ENTER" onKeyUp={this.onEnter} />
       </footer>
     );
   }

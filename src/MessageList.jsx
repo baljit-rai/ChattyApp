@@ -10,10 +10,10 @@ class MessageList extends Component {
       <main className='messages'>
       {this.props.allMessages.map(eachMSG => {
         return <Message key ={eachMSG.key} username ={eachMSG.username} content ={eachMSG.content}/>
-      })
+        })
       }
-        </main>
-      )
-      }
+      </main>
+    )
+  }
 }
 export default MessageList;

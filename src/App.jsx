@@ -23,28 +23,29 @@ class App extends Component {
           key: 1
         }
       ]
-    }
+    };
+    this.chatBox=this.chatBox.bind(this)
   }
 
 
 
-componentDidMount() {
+chatBox(newUser, newMessage) {
   console.log("componentDidMount <App />");
-  setTimeout(() => {
-    console.log("Simulating incoming message");
-    // Add a new message to the list of messages in the data store
-    const newMessage = {key: 3, username: "Michelle", content: "Hello there!"};
-    const messages = this.state.messages.concat(newMessage)
-    // Update the state of the app component.
-    // Calling setState will trigger a call to render() in App and all child components.
-    this.setState({messages: messages})
-  }, 3000);
+  console.log(newMessage + "from" + newUser);
+  let newKey = this.state.messages.length + 1;
+  // Add a new message to the list of messages in the data store
+  const newestMessage = {key: newKey, username: newUser, content: newMessage};
+  const messages = this.state.messages.concat(newestMessage)
+  // Update the state of the app component.
+  // Calling setState will trigger a call to render() in App and all child components.
+  this.setState({messages: messages});
+  document.getElementById('chatBarMessage')
 }
 
   render() {
     return (
       <div>
-        <ChatBar name={this.state.currentUser.name}/>
+        <ChatBar chatBox={this.chatBox} chatBarname={this.state.currentUser.name}/>
         <Navigation/>
         <MessageList allMessages={this.state.messages}/>
       </div>
