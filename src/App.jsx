@@ -4,6 +4,7 @@ import ChatBar from './ChatBar.jsx'
 import Navigation from './Navigation.jsx'
 import MessageList from './MessageList.jsx'
 
+var connectSocket = new WebSocket ("ws://localhost:3001");
 
 
 class App extends Component {
@@ -28,18 +29,26 @@ class App extends Component {
   }
 
 
-
 chatBox(newUser, newMessage) {
-  console.log("componentDidMount <App />");
-  console.log(newMessage + "from" + newUser);
+  console.log(newMessage + " from " + newUser);
   let newKey = this.state.messages.length + 1;
   // Add a new message to the list of messages in the data store
   const newestMessage = {key: newKey, username: newUser, content: newMessage};
-  const messages = this.state.messages.concat(newestMessage)
-  // Update the state of the app component.
-  // Calling setState will trigger a call to render() in App and all child components.
-  this.setState({messages: messages});
+  //Send the msg object as a JSON-formatted string
+  connectSocket.send(JSON.stringify(newestMessage))
   document.getElementById('chatBarMessage')
+}
+
+componentDidMount() {
+  connectSocket.addEventListener("message", event => {
+    var newestMessage = JSON.parse(event.data);
+    // Update the state of the app component.
+    const messages = this.state.messages.concat(newestMessage);
+    // Calling setState will trigger a call to render() in App and all child components.
+    this.setState({messages: messages});
+
+  })
+
 }
 
   render() {
