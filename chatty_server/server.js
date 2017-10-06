@@ -30,8 +30,20 @@ wss.broadcast = function broadcast(data) {
     }
   });
 };
-// Receive incoming messages and call broadcast
+// Receive incoming messages and call broadcast/count number of users
+var count = 0;
 wss.on('connection', (ws) => {
+  count++;
+  var clientCount = {
+    key: uuid(),
+    type: 'connected',
+    count: count
+  }
+  wss.clients.forEach((client) => {
+    // if (client !== ws && client.readyState === WebSocket.OPEN) {
+    client.send(JSON.stringify(clientCount));
+  });
+  wss.broadcast
   ws.on('message', function incoming(message) {
     const incomingMSG = JSON.parse(message);
     let msgObj = {};
@@ -40,7 +52,8 @@ wss.on('connection', (ws) => {
         type: 'incomingMessage',
         key: uuid(),
         username: incomingMSG.username,
-        content: incomingMSG.content
+        content: incomingMSG.content,
+        count: count
       };
     }
     if (incomingMSG.type === 'postNotification') {
@@ -48,15 +61,13 @@ wss.on('connection', (ws) => {
         type: 'incomingNotification',
         key: uuid(),
         oldUsername: incomingMSG.oldUsername,
-        newUsername: incomingMSG.newUsername
+        newUsername: incomingMSG.newUsername,
+        count: count
       };
     }
-
-
     wss.clients.forEach((client) => {
       // if (client !== ws && client.readyState === WebSocket.OPEN) {
       client.send(JSON.stringify(msgObj));
-      // }
     });
   })
 
@@ -64,5 +75,17 @@ wss.on('connection', (ws) => {
   console.log('Client connected');
 
   // Callback for when a client closes the socket/closed their browser.
-  ws.on('close', () => console.log('Client disconnected'));
+  ws.on('close', function() {
+    count--;
+    var clientCount = {
+      key: uuid(),
+      type: 'disconnected',
+      count: count
+    }
+
+    wss.clients.forEach((client) => {
+      // if (client !== ws && client.readyState === WebSocket.OPEN) {
+      client.send(JSON.stringify(clientCount));
+    });
+  })
 });

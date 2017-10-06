@@ -10,7 +10,6 @@ class ChatBar extends Component {
     if(target.key === 'Enter') {
       this.props.chatBox(document.getElementById('chatBarUsername').value,
         document.getElementById('chatBarMessage').value),
-        document.getElementById('chatBarUsername').value = '',
         document.getElementById('chatBarMessage').value = ''
     }
   }

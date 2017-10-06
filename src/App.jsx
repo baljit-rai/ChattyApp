@@ -54,6 +54,8 @@ chatBox(newUser, newMessage) {
 componentDidMount() {
   connectSocket.addEventListener("message", event => {
     var newestMessage = JSON.parse(event.data);
+    console.log(newestMessage);
+    this.setState({onlineUsers:newestMessage.count});
     switch(newestMessage.type) {
       case 'incomingMessage': {
         if (newestMessage.content != '') {
@@ -71,14 +73,12 @@ componentDidMount() {
       case 'incomingNotification': {
         if (newestMessage.newUsername != newestMessage.oldUsername) {
           const displayMSG = this.state.messages
-          console.log('OLD USRNMAER' + newestMessage.oldUsername)
           displayMSG.push({
             type: 'incomingNotification',
             key: newestMessage.key,
             oldUsername: newestMessage.oldUsername,
             newUsername: newestMessage.newUsername
           });
-          console.log("dfgh");
           this.setState({messages: displayMSG});
         }
 
@@ -95,7 +95,7 @@ componentDidMount() {
     return (
       <div>
         <ChatBar chatBox={this.chatBox} chatBarname={this.state.currentUser.name}/>
-        <Navigation/>
+        <Navigation onlineUsers = {this.state.onlineUsers}/>
         <MessageList allMessages={this.state.messages}/>
       </div>
     );
