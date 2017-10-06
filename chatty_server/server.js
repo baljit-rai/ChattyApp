@@ -30,16 +30,32 @@ wss.broadcast = function broadcast(data) {
     }
   });
 };
-
 // Receive incoming messages and call broadcast
 wss.on('connection', (ws) => {
   ws.on('message', function incoming(message) {
-    let incomingMSG = JSON.parse(message);
+    const incomingMSG = JSON.parse(message);
+    let msgObj = {};
+    if (incomingMSG.type === 'postMessage') {
+      msgObj = {
+        type: 'incomingMessage',
+        key: uuid(),
+        username: incomingMSG.username,
+        content: incomingMSG.content
+      };
+    }
+    if (incomingMSG.type === 'postNotification') {
+      msgObj = {
+        type: 'incomingNotification',
+        key: uuid(),
+        oldUsername: incomingMSG.oldUsername,
+        newUsername: incomingMSG.newUsername
+      };
+    }
 
-    incomingMSG.key = uuid();
+
     wss.clients.forEach((client) => {
       // if (client !== ws && client.readyState === WebSocket.OPEN) {
-      client.send(JSON.stringify(incomingMSG));
+      client.send(JSON.stringify(msgObj));
       // }
     });
   })

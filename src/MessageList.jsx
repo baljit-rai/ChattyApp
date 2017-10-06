@@ -9,11 +9,21 @@ class MessageList extends Component {
     return (
       <main className='messages'>
       {this.props.allMessages.map(eachMSG => {
-        return <Message key ={eachMSG.key} username ={eachMSG.username} content ={eachMSG.content}/>
-        })
+        if(eachMSG.type === 'incomingMessage') {
+        return <Message
+        key={eachMSG.key}
+        username ={eachMSG.username}
+        content ={eachMSG.content} />
+        }
+        if(eachMSG.type === 'incomingNotification') {
+          console.log('hihihihihi')
+          return <Message
+          key={eachMSG.key}
+          content={eachMSG.oldUsername + ' changed name to ' + eachMSG.newUsername}/>
+        }
       }
-      </main>
-    )
-  }
+      )
+  }</main>)
+}
 }
 export default MessageList;

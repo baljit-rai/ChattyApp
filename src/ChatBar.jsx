@@ -9,8 +9,9 @@ class ChatBar extends Component {
   onEnter(target) {
     if(target.key === 'Enter') {
       this.props.chatBox(document.getElementById('chatBarUsername').value,
-        document.getElementById('chatBarMessage').value);
-        document.getElementById('chatBarMessage').value = '';
+        document.getElementById('chatBarMessage').value),
+        document.getElementById('chatBarUsername').value = '',
+        document.getElementById('chatBarMessage').value = ''
     }
   }
 
@@ -18,7 +19,7 @@ class ChatBar extends Component {
     console.log("Rendering <ChatBar/>");
     return (
       <footer className="chatbar">
-        <input className="chatbar-username" id="chatBarUsername" defaultValue={this.props.name} placeholder="Your Name (Optional)" />
+        <input className="chatbar-username" id="chatBarUsername" placeholder="Your Name (Optional)" />
         <input className="chatbar-message" id="chatBarMessage" placeholder="Type a message and hit ENTER" onKeyUp={this.onEnter} />
       </footer>
     );
