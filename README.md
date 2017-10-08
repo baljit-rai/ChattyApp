@@ -12,6 +12,8 @@ Once you have cloned this repo
 - cd into chatty_server, npm install and then npm start the server.js in this directory as well
 - open http://localhost:3000 in your browser
 
+!["Chatty App in action"](https://github.com/baljit-rai/ChattyApp/blob/master/docs/Screen%20Shot%202017-10-08%20at%203.02.35%20PM.png)
+
 
 ### Dependencies
 
