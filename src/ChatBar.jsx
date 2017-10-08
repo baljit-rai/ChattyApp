@@ -15,10 +15,9 @@ class ChatBar extends Component {
   }
 
   render() {
-    console.log("Rendering <ChatBar/>");
     return (
       <footer className="chatbar">
-        <input className="chatbar-username" id="chatBarUsername" placeholder="Your Name (Optional)" />
+        <input className="chatbar-username" id="chatBarUsername" placeholder="Your Name (Optional)" onKeyUp={this.onEnter} />
         <input className="chatbar-message" id="chatBarMessage" placeholder="Type a message and hit ENTER" onKeyUp={this.onEnter} />
       </footer>
     );

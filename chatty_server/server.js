@@ -18,10 +18,6 @@ const wss = new SocketServer({
   server
 });
 
-// Set up a callback that will run when a client connects to the server
-// When a client connects they are assigned a socket, represented by
-// the ws parameter in the callback.
-
 // Broadcast to all.
 wss.broadcast = function broadcast(data) {
   wss.clients.forEach(function each(client) {
@@ -40,7 +36,6 @@ wss.on('connection', (ws) => {
     count: count
   }
   wss.clients.forEach((client) => {
-    // if (client !== ws && client.readyState === WebSocket.OPEN) {
     client.send(JSON.stringify(clientCount));
   });
   wss.broadcast
@@ -66,7 +61,6 @@ wss.on('connection', (ws) => {
       };
     }
     wss.clients.forEach((client) => {
-      // if (client !== ws && client.readyState === WebSocket.OPEN) {
       client.send(JSON.stringify(msgObj));
     });
   })
@@ -84,7 +78,6 @@ wss.on('connection', (ws) => {
     }
 
     wss.clients.forEach((client) => {
-      // if (client !== ws && client.readyState === WebSocket.OPEN) {
       client.send(JSON.stringify(clientCount));
     });
   })

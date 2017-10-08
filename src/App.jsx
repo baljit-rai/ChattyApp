@@ -3,14 +3,14 @@ import ChatBar from './ChatBar.jsx'
 import Navigation from './Navigation.jsx'
 import MessageList from './MessageList.jsx'
 
-var connectSocket = new WebSocket ("ws://localhost:3001");
+var connectSocket = new WebSocket ('ws://localhost:3001');
 
 
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      currentUser: {name: "<3 Ashley the Secratary of My Heart <3"}, //if currentUser is not defined, it means the user is Anonymous
+      currentUser: {name: 'Anonymous'}, //if currentUser is not defined, it means the user is Anonymous
       messages: [],
       notifications: [],
       onlineUsers: 0
@@ -20,27 +20,24 @@ class App extends Component {
 
 //Send msg to websocket
 chatBox(newUser, newMessage) {
-  console.log(newMessage + " from " + newUser);
   if(this.state.currentUser.name === newUser || newUser === '') {
   // Add a new message to the list of messages in the data store
-    console.log("BAD");
     const newestMessage = {
-    type: "postMessage",
+    type: 'postMessage',
     username: this.state.currentUser.name,
 
     content: newMessage};
   connectSocket.send(JSON.stringify(newestMessage))
   } else {
     this.setState({currentUser: {name: newUser}});
-    console.log(newUser);
   connectSocket.send(JSON.stringify({
-    type: "postNotification",
+    type: 'postNotification',
     oldUsername: this.state.currentUser.name,
     newUsername: newUser
   }))
 
   const newestMessage = {
-    type: "postMessage",
+    type: 'postMessage',
     username: newUser,
     content: newMessage};
   connectSocket.send(JSON.stringify(newestMessage))
@@ -52,9 +49,8 @@ chatBox(newUser, newMessage) {
 
 //Recieve message from websocket
 componentDidMount() {
-  connectSocket.addEventListener("message", event => {
+  connectSocket.addEventListener('message', event => {
     var newestMessage = JSON.parse(event.data);
-    console.log(newestMessage);
     this.setState({onlineUsers:newestMessage.count});
     switch(newestMessage.type) {
       case 'incomingMessage': {
@@ -84,9 +80,6 @@ componentDidMount() {
 
       }
     }
-    // const messages = this.state.messages.concat(newestMessage);
-    // this.setState({messages: messages});
-
   })
 
 }

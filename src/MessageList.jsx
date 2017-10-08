@@ -16,7 +16,6 @@ class MessageList extends Component {
         content ={eachMSG.content} />
         }
         if(eachMSG.type === 'incomingNotification') {
-          console.log('hihihihihi')
           return <Message
           key={eachMSG.key}
           content={eachMSG.oldUsername + ' changed name to ' + eachMSG.newUsername}/>
